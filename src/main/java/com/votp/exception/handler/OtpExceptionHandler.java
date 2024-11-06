@@ -4,7 +4,6 @@ import com.votp.exception.OtpException;
 import com.votp.exception.OtpRequestLimitExceededException;
 import com.votp.exception.OtpValidationLimitExceededException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
