@@ -38,7 +38,7 @@ VOTP is a robust web application developed with Spring Boot, designed to generat
 ## Configuration
 
 ### Redis Configuration
-For instructions on setting up Redis caching, refer to the [Redis Configuration Guide](./docs/REDIS_CONFIG.md).
+For instructions on setting up Redis caching, refer to the [Redis Configuration Guide](./docs/REDIS_CONFIG.MD).
 
 ## Contributing
 
