@@ -1,8 +1,7 @@
 package com.votp.config;
 
 import com.votp.exception.RedisConnectionEstablishException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +12,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 
 @Configuration
 @Profile("redis")
+@Slf4j
 public class RedisConfig {
-
-  private final Logger logger = LoggerFactory.getLogger("RedisConfig");
 
   @Value("${redis.host:localhost}")
   private String host;
@@ -42,20 +40,7 @@ public class RedisConfig {
     LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(
         redisStandaloneConfiguration);
     connectionFactory.start();
-    checkRedisConnection(connectionFactory);
     return connectionFactory;
 
-  }
-
-  public void checkRedisConnection(RedisConnectionFactory redisConnectionFactory) {
-    try {
-      logger.info("PING...");
-      logger.info("{} Connected to Redis successfully.",
-          redisConnectionFactory.getConnection().ping());
-    } catch (Exception e) {
-      logger.error("Could not connect to Redis: {}", e.getMessage());
-      throw new RedisConnectionEstablishException(
-          "Redis connection failed. Application will not start.", e);
-    }
   }
 }
