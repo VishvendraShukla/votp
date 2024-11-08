@@ -33,6 +33,7 @@
     <spring-security-crypto.version>5.5.0</spring-security-crypto.version>
     <bcpkix-jdk15on.version>1.70</bcpkix-jdk15on.version>
     <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
+    <twilio.version>10.6.2</twilio.version>
   </properties>
   <dependencies>
     <dependency>
@@ -92,6 +93,12 @@
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
       <version>${bcprov-jdk15on.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.twilio.sdk</groupId>
+      <artifactId>twilio</artifactId>
+      <version>${twilio.version}</version>
     </dependency>
 
     <dependency>
