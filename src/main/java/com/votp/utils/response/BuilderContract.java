@@ -7,7 +7,7 @@ public abstract class BuilderContract<R, B> {
 
   public HttpStatus HTTP_STATUS = HttpStatus.OK;
 
-  abstract public ResponseEntity<R> build();
+  abstract public R build();
 
   @SuppressWarnings("unchecked")
   public B withHttpStatus(HttpStatus status) {

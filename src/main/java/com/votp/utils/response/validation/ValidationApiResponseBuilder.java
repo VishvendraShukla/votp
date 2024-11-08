@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 
-public class ValidationApiResponseBuilder extends BuilderContract<Response, ValidationApiResponseBuilder> {
+public class ValidationApiResponseBuilder extends BuilderContract<ResponseEntity<Response>, ValidationApiResponseBuilder> {
 
   private final MessageSource messageSource;
   private Locale locale;

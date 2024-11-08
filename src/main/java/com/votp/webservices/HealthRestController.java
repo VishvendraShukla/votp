@@ -1,8 +1,6 @@
 package com.votp.webservices;
 
-import com.votp.models.Notification;
 import com.votp.models.Response;
-import com.votp.notification.NotifierRegistry;
 import com.votp.utils.response.ApiResponseBuilder;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
@@ -47,12 +45,6 @@ public class HealthRestController {
         .withLocale(Locale.forLanguageTag(lang))
         .withMessage(messageKey)
         .build();
-  }
-
-  @GetMapping("/send")
-  public String sendMessage() {
-    NotifierRegistry.notifyByAllEnabled(new Notification("coolvishvendra14@gmail.com", "notification", "subject"));
-    return "Hello";
   }
 
 }

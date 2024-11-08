@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StartupRunner implements CommandLineRunner {
 
-  //  private final ApplicationContext context;
   private final Environment environment;
   private final RedisConnectionFactory redisConnectionFactory;
 

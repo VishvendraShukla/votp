@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 
 public class HealthApiResponseBuilder extends
-    BuilderContract<Response, HealthApiResponseBuilder> {
+    BuilderContract<ResponseEntity<Response>, HealthApiResponseBuilder> {
 
   private final MessageSource messageSource;
   private Locale locale;
