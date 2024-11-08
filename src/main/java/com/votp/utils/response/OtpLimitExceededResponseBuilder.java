@@ -1,55 +1,53 @@
-package com.votp.utils.response.validation;
+package com.votp.utils.response;
 
 import com.votp.models.Response;
 import com.votp.models.Response.Payload;
-import com.votp.utils.response.BuilderContract;
 import java.util.Locale;
 import java.util.Objects;
-import lombok.SneakyThrows;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 
-public class ValidationApiResponseBuilder extends BuilderContract<Response, ValidationApiResponseBuilder> {
+public class OtpLimitExceededResponseBuilder extends BuilderContract<Response, OtpLimitExceededResponseBuilder> {
 
   private final MessageSource messageSource;
   private Locale locale;
-  private Boolean isValidated;
+  private Boolean isRequest;
 
-  public ValidationApiResponseBuilder(MessageSource messageSource) {
+  public OtpLimitExceededResponseBuilder(MessageSource messageSource) {
     this.messageSource = messageSource;
   }
 
-  public ValidationApiResponseBuilder withLocale(Locale locale) {
+  public OtpLimitExceededResponseBuilder withLocale(Locale locale) {
     this.locale = locale;
     return this;
   }
 
-  public ValidationApiResponseBuilder withValidation(Boolean isValidated) {
-    this.isValidated = isValidated;
+  public OtpLimitExceededResponseBuilder isRequestLimitExceeded(Boolean isRequest) {
+    this.isRequest = isRequest;
     return this;
   }
 
-  @SneakyThrows
   @Override
   public ResponseEntity<Response> build() {
     if (Objects.isNull(this.locale)) {
       this.locale = LocaleContextHolder.getLocale();
     }
 
-    if (Objects.isNull(this.isValidated)) {
-      this.isValidated = Boolean.FALSE;
+    if (Objects.isNull(this.isRequest)) {
+      this.isRequest = Boolean.FALSE;
     }
 
     String messageKey =
-        this.isValidated ? "message.otp.success.api.validated" : "message.otp.api.invalidated";
+        this.isRequest ? "limit.exceeded.otp.request" : "limit.exceeded.otp.validation";
 
     return ResponseEntity.status(HTTP_STATUS).body(Response.builder()
-        .isError(false)
+        .isError(true)
         .payload(Payload.builder().message(
             messageSource.getMessage(messageKey, null,
                 this.locale)
         ).build())
         .build());
   }
+
 }

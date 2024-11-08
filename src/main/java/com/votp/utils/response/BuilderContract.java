@@ -1,9 +1,17 @@
 package com.votp.utils.response;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public interface BuilderContract<T> {
+public abstract class BuilderContract<R, B> {
 
-  ResponseEntity<T> build();
+  public HttpStatus HTTP_STATUS = HttpStatus.OK;
 
+  abstract public ResponseEntity<R> build();
+
+  @SuppressWarnings("unchecked")
+  public B withHttpStatus(HttpStatus status) {
+    HTTP_STATUS = status;
+    return (B) this;
+  }
 }

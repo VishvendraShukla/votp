@@ -11,7 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 
-public class SuccessOtpApiResponseBuilder implements BuilderContract<Response> {
+public class SuccessOtpApiResponseBuilder extends BuilderContract<Response, SuccessOtpApiResponseBuilder> {
 
   private final MessageSource messageSource;
   private Locale locale;
@@ -42,7 +42,7 @@ public class SuccessOtpApiResponseBuilder implements BuilderContract<Response> {
       throw new Exception();
     }
 
-    return ResponseEntity.ok(Response.builder()
+    return ResponseEntity.status(HTTP_STATUS).body(Response.builder()
         .isError(false)
         .payload(Payload.builder().message(
             messageSource.getMessage("message.otp.success.api.created", new Object[]{this.otp},

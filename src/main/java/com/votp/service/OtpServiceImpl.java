@@ -23,7 +23,7 @@ public class OtpServiceImpl implements OtpService {
     if (otpThrottleService.canGenerateOtp(identifier)) {
       return otpStore.generateOtp(identifier);
     }
-    throw new OtpRequestLimitExceededException();
+    throw new OtpRequestLimitExceededException(identifier);
   }
 
   @Override
@@ -32,6 +32,6 @@ public class OtpServiceImpl implements OtpService {
     if (otpThrottleService.canValidateOtp(identifier, otp)) {
       return otpStore.validateOtp(identifier, otp);
     }
-    throw new OtpValidationLimitExceededException();
+    throw new OtpValidationLimitExceededException(identifier);
   }
 }

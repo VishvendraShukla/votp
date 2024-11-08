@@ -7,7 +7,8 @@ import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 
-public class HealthApiResponseBuilder implements BuilderContract<Response> {
+public class HealthApiResponseBuilder extends
+    BuilderContract<Response, HealthApiResponseBuilder> {
 
   private final MessageSource messageSource;
   private Locale locale;
@@ -29,7 +30,7 @@ public class HealthApiResponseBuilder implements BuilderContract<Response> {
 
   @Override
   public ResponseEntity<Response> build() {
-    return ResponseEntity.ok(Response.builder()
+    return ResponseEntity.status(HTTP_STATUS).body(Response.builder()
         .isError(false)
         .payload(Payload.builder().message(
             messageSource.getMessage(messageKey, null,

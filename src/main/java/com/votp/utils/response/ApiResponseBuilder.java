@@ -19,4 +19,9 @@ public class ApiResponseBuilder {
       MessageSource messageSource) {
     return new ValidationApiResponseBuilder(messageSource);
   }
+
+  public static OtpLimitExceededResponseBuilder getOtpLimitExceededResponseBuilder(
+      MessageSource messageSource) {
+    return new OtpLimitExceededResponseBuilder(messageSource);
+  }
 }
