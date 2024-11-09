@@ -8,12 +8,14 @@ import com.votp.models.Notification;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 @Profile("notification")
+@ConditionalOnProperty(name = "TWILIO_NOTIFIER_ENABLED", havingValue = "true", matchIfMissing = false)
 public class TwilioSmsNotifier implements Notifier {
 
   @Value("${TWILIO_ACCOUNT_SID:a}")
@@ -25,12 +27,8 @@ public class TwilioSmsNotifier implements Notifier {
   @Value("${TWILIO_SENDER_PHONE_NUMBER:c}")
   private String fromPhoneNumber;
 
-  public TwilioSmsNotifier(
-      @Value("${TWILIO_NOTIFIER_ENABLED:false}") Boolean isTwilioNotifierEnabled) {
-    if (isTwilioNotifierEnabled) {
-      log.info("TwilioSmsNotifier is enabled and is registered");
-      register();
-    }
+  public TwilioSmsNotifier() {
+    register();
   }
 
   @PostConstruct
@@ -46,14 +44,14 @@ public class TwilioSmsNotifier implements Notifier {
     }
     Twilio.init(twilioAccountSid, twilioAuthToken);
     log.info(
-        "TwilioSmsNotifier is initialized with properties: twilioAccountSid: {}, twilioAuthToken: {}, fromPhoneNumber: {}",
+        "TwilioSmsNotifier is enabled and is initialized with properties: twilioAccountSid: {}, twilioAuthToken: {}, fromPhoneNumber: {}",
         twilioAccountSid, twilioAuthToken, fromPhoneNumber);
   }
 
   @Override
   public void notify(Notification message) {
     Message sms = Message.creator(
-            new PhoneNumber(message.getTo()),
+            new PhoneNumber(message.getTo().getPhoneNumber()),
             new PhoneNumber(fromPhoneNumber),
             message.getNotification())
         .create();

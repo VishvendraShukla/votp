@@ -12,6 +12,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OtpNotify extends Otp {
 
-  private String to;
+  private To to;
 
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class To {
+
+    private String email;
+    private String phoneNumber;
+  }
 }

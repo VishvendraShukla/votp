@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @Profile("notification")
+@ConditionalOnProperty(name = "GMAIL_NOTIFIER_ENABLED", havingValue = "true", matchIfMissing = false)
 public class GmailNotifier implements Notifier {
 
   @Value("${GMAIL_HOST:smtp.gmail.com}")
@@ -38,17 +40,14 @@ public class GmailNotifier implements Notifier {
 
   private JavaMailSender mailSender;
 
-  public GmailNotifier(@Value("${GMAIL_NOTIFIER_ENABLED:false}") Boolean isGmailNotifierEnabled) {
-    if (isGmailNotifierEnabled) {
-      log.info("GmailNotifier is enabled and is registered");
-      register();
-    }
+  public GmailNotifier() {
+    register();
   }
 
   @Override
   public void notify(Notification message) {
     SimpleMailMessage email = new SimpleMailMessage();
-    email.setTo(message.getTo());
+    email.setTo(message.getTo().getEmail());
     email.setSubject(subject);
     email.setText(message.getNotification());
     email.setFrom(fromEmail);
@@ -70,7 +69,7 @@ public class GmailNotifier implements Notifier {
     }
     this.mailSender = getJavaMailSender();
     log.info(
-        "GmailNotifier is initialized with properties: username:{}, password: XXXXXXXXX, from email: {}, subject: {}",
+        "GmailNotifier is enabled and is initialized with properties: username:{}, password: XXXXXXXXX, from email: {}, subject: {}",
         gmailUsername, fromEmail, subject);
   }
 

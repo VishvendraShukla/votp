@@ -1,5 +1,6 @@
 package com.votp.models;
 
+import com.votp.models.OtpNotify.To;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Notification {
 
-  private String to;
+  private To to;
   private String notification;
 
 }
