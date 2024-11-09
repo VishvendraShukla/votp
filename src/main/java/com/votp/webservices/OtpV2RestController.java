@@ -31,24 +31,25 @@ public class OtpV2RestController {
   @PostMapping(value = "create")
   public ResponseEntity<Response> createAndStoreOtp(@RequestBody final OtpNotify otp)
       throws OtpRequestLimitExceededException {
+    String notification = "";
     try {
       String createdOtp = otpService.generateOtp(otp.getIdentifier());
-      String notification = NotificationMessageBuilder.builder(messageSource)
+      notification = NotificationMessageBuilder.builder(messageSource)
           .withOtp(createdOtp)
           .withLocale(Locale.forLanguageTag(otp.getLang()))
           .withNotificationType(NotificationType.SUCCESS_OTP_CREATED)
           .build();
-      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
       return ApiResponseBuilder.getSuccessOtpApiResponse(messageSource)
           .withOtp(createdOtp)
           .withLocale(Locale.forLanguageTag(otp.getLang())).build();
     } catch (OtpRequestLimitExceededException exceededException) {
-      String notification = NotificationMessageBuilder.builder(messageSource)
+      notification = NotificationMessageBuilder.builder(messageSource)
           .withLocale(Locale.forLanguageTag(otp.getLang()))
           .withNotificationType(NotificationType.LIMIT_EXCEEDED)
           .build();
-      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
       throw exceededException;
+    } finally {
+      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
     }
 
   }
@@ -57,24 +58,25 @@ public class OtpV2RestController {
   public ResponseEntity<Response> validateOtp(
       @RequestBody final OtpNotify otp)
       throws OtpValidationLimitExceededException {
+    String notification = "";
     try {
       Boolean validation = otpService.validateOtp(otp.getIdentifier(), otp.getOtp());
       NotificationType notificationType = validation ? NotificationType.SUCCESS_VALIDATION_OTP
           : NotificationType.FAILED_VALIDATION_OTP;
-      String notification = NotificationMessageBuilder.builder(messageSource)
+      notification = NotificationMessageBuilder.builder(messageSource)
           .withLocale(Locale.forLanguageTag(otp.getLang()))
           .withNotificationType(notificationType)
           .build();
-      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
       return ApiResponseBuilder.getValidationApiResponseBuilder(messageSource)
           .withValidation(validation).withLocale(Locale.forLanguageTag(otp.getLang())).build();
     } catch (OtpValidationLimitExceededException exceededException) {
-      String notification = NotificationMessageBuilder.builder(messageSource)
+      notification = NotificationMessageBuilder.builder(messageSource)
           .withLocale(Locale.forLanguageTag(otp.getLang()))
           .withNotificationType(NotificationType.LIMIT_EXCEEDED)
           .build();
-      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
       throw exceededException;
+    } finally {
+      NotifierRegistry.notifyByAllEnabled(new Notification(otp.getTo(), notification));
     }
   }
 
