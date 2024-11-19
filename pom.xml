@@ -9,7 +9,7 @@
     <version>3.3.5</version>
     <relativePath/>
   </parent>
-  <groupId>com</groupId>
+  <groupId>com.vishvendra</groupId>
   <artifactId>votp</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>votp</name>
