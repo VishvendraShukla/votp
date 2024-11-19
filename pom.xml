@@ -122,5 +122,14 @@
         </configuration>
       </plugin>
     </plugins>
+    <finalName>${project.artifactId}-${project.version}</finalName>
   </build>
+  <profiles>
+    <profile>
+      <id>prod</id>
+      <build>
+        <finalName>${project.artifactId}-${project.version}-prod</finalName>
+      </build>
+    </profile>
+  </profiles>
 </project>
